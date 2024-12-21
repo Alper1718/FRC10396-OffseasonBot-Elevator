@@ -24,7 +24,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
 
   public boolean isSIM() {
     return currentMode == Mode.SIM;
@@ -41,6 +41,15 @@ public final class Constants {
     REPLAY
   }
 
+  public static class ClimbConstants {
+
+    public static final int motorID = 2;
+    public static final NeutralMode neutralMode = NeutralMode.Brake;
+    public static final boolean reversed = true;
+    public static final double downSpeed = 0.3;
+    public static final double upSpeed = 0.8;
+    public static final String climbUpSpeed = null;
+  }
   public static class DriveConstants {
 
     public static final int leftMasterID = 1;

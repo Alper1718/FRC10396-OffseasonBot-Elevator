@@ -18,15 +18,11 @@ public class RunIntake extends SequentialCommandGroup {
   /** Creates a new RunIntake. */
   private Intake intake;
 
-  private CommandXboxController controller;
-
-  public RunIntake(Intake intake, CommandXboxController controller) {
+  public RunIntake(Intake intake) {
     this.intake = intake;
-    this.controller = controller;
 
     addCommands(
         new RunCommand(() -> intake.intake(), intake).until(intake::isGPPresent),
-        new RunCommand(() -> intake.stop(), intake),
-        new RunCommand(() -> controller.getHID().setRumble(RumbleType.kBothRumble, IntakeConstants.rumbleStrength)));
+        new RunCommand(() -> intake.stop(), intake));
   }
 }

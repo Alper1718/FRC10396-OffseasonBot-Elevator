@@ -14,6 +14,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,21 +23,22 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.climb.Climb;
+import frc.robot.commands.drive.DriveBackwards;
 import frc.robot.commands.intake.AmpSequence;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOVictorSPX;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveIO;
 import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.drive.DriveIOVictorSPX;
-import frc.robot.subsystems.flywheel.Flywheel;
-import frc.robot.subsystems.flywheel.FlywheelIO;
-import frc.robot.subsystems.flywheel.FlywheelIOSim;
-import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOVictorSPX;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,16 +49,14 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Flywheel flywheel;
   private final Intake intake;
+  private final Climber climber;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final Joystick controller = new Joystick(0);
 
   // Dashboard inputs
   // private final LoggedDashboardChooser<Command> autoChooser;
-  private final LoggedDashboardNumber flywheelSpeedInput =
-      new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -64,22 +64,23 @@ public class RobotContainer {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         drive = new Drive(new DriveIOVictorSPX());
-        flywheel = new Flywheel(new FlywheelIOSparkMax());
         intake = new Intake(new IntakeIOVictorSPX());
+        climber = new Climber(new ClimberIOVictorSPX());
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive = new Drive(new DriveIOSim());
-        flywheel = new Flywheel(new FlywheelIOSim());
         intake = new Intake(new IntakeIOSim());
+        climber = new Climber(new ClimberIO() {});
         break;
 
       default:
         // Replayed robot, disable IO implementations
         drive = new Drive(new DriveIO() {});
-        flywheel = new Flywheel(new FlywheelIO() {});
         intake = new Intake(new IntakeIO() {});
+        climber = new Climber(new ClimberIO() {});
+
         break;
     }
     // Configure the button bindings
@@ -102,28 +103,42 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+
+    //GETRAWBUTTON(10) needs to change for an actual button. CHANGE IT!!!
     drive.setDefaultCommand(
         Commands.run(
             () ->
                 drive.driveCurvature(
-                    applyDeadband(-controller.getLeftY(), 0.05),
-                    applyDeadband(controller.getLeftX(), 0.05),
-                    controller.rightBumper().getAsBoolean()),
+                    applyDeadband(-controller.getRawAxis(1), 0.05),
+                    applyDeadband(controller.getRawAxis(2), 0.05),
+                    controller.getRawButton(10)),
             drive));
 
-    controller
-        .a()
-        .onTrue(new RunIntake(intake, controller))
-        .onFalse(new RunCommand(() -> intake.stop(), intake));
+    //for arcade drive, comment above and uncomment below
+    /*
+     drive.setDefaultCommand(
+        Commands.run(
+            () ->
+                drive.driveArcade(
+                    applyDeadband(-controller.getRawAxis(1), 0.05),
+                    applyDeadband(controller.getRawAxis(2), 0.05)),
+            drive));
+     */
 
-    controller
-        .b()
-        .onTrue(new AmpSequence(intake))
-        .onFalse(
-            new ParallelCommandGroup(
-                new RunCommand(() -> intake.stop(), intake),
-                new InstantCommand(
-                    () -> controller.getHID().setRumble(RumbleType.kBothRumble, 0))));
+     //Intake Command
+     new JoystickButton(controller, 7)
+      .whileTrue(new RunIntake(intake))
+      .onFalse(
+        new RunCommand(()-> intake.stop(), intake));
+
+    //ampe birakma commandi
+    new JoystickButton(controller, 8)
+    .whileTrue(new AmpSequence(intake))
+    .onFalse(new RunCommand(()-> intake.stop(), intake));
+
+    // Climb Command
+    new JoystickButton(controller, 2).whileTrue(new Climb(climber, false));
+    new JoystickButton(controller,4 ).whileTrue(new Climb(climber, true));
   }
 
   /**
@@ -133,6 +148,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // return autoChooser.get();
-    return null;
+    return new DriveBackwards(drive, 3);
   }
 }
