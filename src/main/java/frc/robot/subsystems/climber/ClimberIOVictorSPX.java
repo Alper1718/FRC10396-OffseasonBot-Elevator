@@ -6,20 +6,15 @@ package frc.robot.subsystems.climber;
 
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants.ClimbConstants;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
 
 /** Add your docs here. */
-public class ClimberIOVictorSPX implements ClimberIO{
+public class ClimberIOVictorSPX implements ClimberIO {
 
-    public final VictorSPX climber = new VictorSPX(ClimbConstants.motorID);
-    private double appliedPercent;
+  public final VictorSPX climber = new VictorSPX(ClimbConstants.motorID);
+  private double appliedPercent;
 
-
-  public ClimberIOVictorSPX(){
+  public ClimberIOVictorSPX() {
     climber.setInverted(ClimbConstants.reversed);
     climber.setNeutralMode(ClimbConstants.neutralMode);
   }

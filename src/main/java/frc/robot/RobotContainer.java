@@ -15,14 +15,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climb.Climb;
 import frc.robot.commands.drive.DriveBackwards;
@@ -104,41 +100,39 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    //GETRAWBUTTON(10) needs to change for an actual button. CHANGE IT!!!
+    // GETRAWBUTTON(10) needs to change for an actual button. CHANGE IT!!!
+    /*drive.setDefaultCommand(
+            Commands.run(
+                () ->
+                    drive.driveCurvature(
+                        applyDeadband(controller.getRawAxis(1), 0.05),
+                        applyDeadband(controller.getRawAxis(2), 0.05),
+                        controller.getRawButton(6)),
+                drive));
+    */
+    // for arcade drive, comment above and uncomment below
+
     drive.setDefaultCommand(
         Commands.run(
             () ->
-                drive.driveCurvature(
-                    applyDeadband(-controller.getRawAxis(1), 0.05),
-                    applyDeadband(controller.getRawAxis(2), 0.05),
-                    controller.getRawButton(10)),
-            drive));
-
-    //for arcade drive, comment above and uncomment below
-    /*
-     drive.setDefaultCommand(
-        Commands.run(
-            () ->
                 drive.driveArcade(
-                    applyDeadband(-controller.getRawAxis(1), 0.05),
+                    applyDeadband(controller.getRawAxis(1), 0.05),
                     applyDeadband(controller.getRawAxis(2), 0.05)),
             drive));
-     */
 
-     //Intake Command
-     new JoystickButton(controller, 7)
-      .whileTrue(new RunIntake(intake))
-      .onFalse(
-        new RunCommand(()-> intake.stop(), intake));
+    // Intake Command
+    new JoystickButton(controller, 7)
+        .whileTrue(new RunIntake(intake))
+        .onFalse(new RunCommand(() -> intake.stop(), intake));
 
-    //ampe birakma commandi
+    // ampe birakma commandi
     new JoystickButton(controller, 8)
-    .whileTrue(new AmpSequence(intake))
-    .onFalse(new RunCommand(()-> intake.stop(), intake));
+        .whileTrue(new AmpSequence(intake))
+        .onFalse(new RunCommand(() -> intake.stop(), intake));
 
     // Climb Command
     new JoystickButton(controller, 2).whileTrue(new Climb(climber, false));
-    new JoystickButton(controller,4 ).whileTrue(new Climb(climber, true));
+    new JoystickButton(controller, 4).whileTrue(new Climb(climber, true));
   }
 
   /**

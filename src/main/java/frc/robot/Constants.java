@@ -50,6 +50,7 @@ public final class Constants {
     public static final double upSpeed = 0.8;
     public static final String climbUpSpeed = null;
   }
+
   public static class DriveConstants {
 
     public static final int leftMasterID = 1;

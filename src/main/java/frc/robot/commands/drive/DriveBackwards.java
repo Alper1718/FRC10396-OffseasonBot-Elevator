@@ -14,15 +14,14 @@ import frc.robot.subsystems.drive.Drive;
 public class DriveBackwards extends SequentialCommandGroup {
   /** Creates a new DriveBackwards. */
   private double seconds;
+
   private Drive drive;
+
   public DriveBackwards(Drive drive, double seconds) {
     this.drive = drive;
     this.seconds = seconds;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new RunCommand(
-        () -> drive.driveArcade(-0.3, 0), drive).withTimeout(seconds)
-    );
+    addCommands(new RunCommand(() -> drive.driveArcade(-0.5, 0), drive).withTimeout(seconds));
   }
 }

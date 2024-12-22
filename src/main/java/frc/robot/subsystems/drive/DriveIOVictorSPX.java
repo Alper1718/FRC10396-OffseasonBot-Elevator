@@ -6,10 +6,10 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveIOVictorSPX implements DriveIO {
 
-  private final WPI_VictorSPX leftMaster = new WPI_VictorSPX(0);
-  private final WPI_VictorSPX leftSlave = new WPI_VictorSPX(0);
-  private final WPI_VictorSPX rightMaster = new WPI_VictorSPX(0);
-  private final WPI_VictorSPX rightSlave = new WPI_VictorSPX(0);
+  private final WPI_VictorSPX leftMaster = new WPI_VictorSPX(DriveConstants.leftMasterID);
+  private final WPI_VictorSPX leftSlave = new WPI_VictorSPX(DriveConstants.leftSlaveID);
+  private final WPI_VictorSPX rightMaster = new WPI_VictorSPX(DriveConstants.rightMasterID);
+  private final WPI_VictorSPX rightSlave = new WPI_VictorSPX(DriveConstants.rightSlaveID);
   private boolean isTurnInPlaceAllowed = false;
 
   public final DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);

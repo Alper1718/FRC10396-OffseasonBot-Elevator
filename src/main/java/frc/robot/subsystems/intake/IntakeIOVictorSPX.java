@@ -16,11 +16,11 @@ public class IntakeIOVictorSPX implements IntakeIO {
   public static final DigitalInput intake_sensor = new DigitalInput(IntakeConstants.sensorID);
   private double appliedPercent;
 
-  public IntakeIOVictorSPX(){
+  public IntakeIOVictorSPX() {
     intake_motor.setInverted(IntakeConstants.reversed);
     intake_motor.setNeutralMode(IntakeConstants.neutralMode);
   }
-  
+
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.appliedPercent = appliedPercent;

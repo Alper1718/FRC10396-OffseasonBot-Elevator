@@ -4,32 +4,29 @@
 
 package frc.robot.subsystems.climber;
 
-import org.littletonrobotics.junction.Logger;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
+import org.littletonrobotics.junction.Logger;
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   private final ClimberIO io;
+
   private final ClimberIOInputsAutoLogged inputs = new ClimberIOInputsAutoLogged();
 
   public Climber(ClimberIO io) {
     this.io = io;
   }
 
-  public void climb(boolean up){
-    if(up){
+  public void climb(boolean up) {
+    if (up) {
       io.runClimber(ClimbConstants.upSpeed);
-    }
-    else{
-      io.runClimber( -ClimbConstants.downSpeed);
+    } else {
+      io.runClimber(-ClimbConstants.downSpeed);
     }
   }
 
-  public void stop(){
+  public void stop() {
     io.stop();
   }
 

@@ -4,11 +4,8 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.intake.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
