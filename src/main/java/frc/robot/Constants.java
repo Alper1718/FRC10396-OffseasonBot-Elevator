@@ -66,6 +66,7 @@ public final class Constants {
     public static final NeutralMode neutralMode = NeutralMode.Coast;
     public static final double kSpeedRateLimit = 6;
     public static final double kRotRateLimit = 6;
+    public static final double slowSpeedMultiplier = 0.4;
   }
 
   public static class IntakeConstants {

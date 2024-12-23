@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climb.Climb;
 import frc.robot.commands.drive.DriveBackwards;
+import frc.robot.commands.drive.JoystickDrive;
 import frc.robot.commands.intake.AmpSequence;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.subsystems.climber.Climber;
@@ -89,36 +89,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private double applyDeadband(double value, double deadband) {
-    if (Math.abs(value) > deadband) {
-      // Scale the output to account for the deadband region
-      return (value - Math.copySign(deadband, value)) / (1.0 - deadband);
-    } else {
-      return 0.0;
-    }
-  }
-
   private void configureButtonBindings() {
 
-    // GETRAWBUTTON(10) needs to change for an actual button. CHANGE IT!!!
-    /*drive.setDefaultCommand(
-            Commands.run(
-                () ->
-                    drive.driveCurvature(
-                        applyDeadband(controller.getRawAxis(1), 0.05),
-                        applyDeadband(controller.getRawAxis(2), 0.05),
-                        controller.getRawButton(6)),
-                drive));
-    */
-    // for arcade drive, comment above and uncomment below
-
-    drive.setDefaultCommand(
-        Commands.run(
-            () ->
-                drive.driveArcade(
-                    applyDeadband(controller.getRawAxis(1), 0.05),
-                    applyDeadband(controller.getRawAxis(2), 0.05)),
-            drive));
+    drive.setDefaultCommand(new JoystickDrive(drive, controller));
 
     // Intake Command
     new JoystickButton(controller, 7)
