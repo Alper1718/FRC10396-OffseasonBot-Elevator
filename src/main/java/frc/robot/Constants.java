@@ -80,4 +80,13 @@ public final class Constants {
     public static final double shootSpeed = 1;
     public static final double rumbleStrength = 0.3;
   }
+
+  public static class ElevatorConstants {
+    public static final int MOTOR_1_ID = 1;
+    public static final int MOTOR_2_ID = 2;
+    public static final int CANCODER_ID = 3;
+
+    public static final double GEAR_REDUCTION = 1.0 / 9.0;
+  }
+  
 }
