@@ -85,6 +85,9 @@ public final class Constants {
     public static final int MOTOR_1_ID = 1;
     public static final int MOTOR_2_ID = 2;
     public static final int CANCODER_ID = 3;
+    public static final double MAX_POSITION = 2.0;
+    public static final double MIN_POSITION = 0.0;
+    public static final double DEADBAND = 0.02;
 
     public static final double GEAR_REDUCTION = 1.0 / 9.0;
   }
