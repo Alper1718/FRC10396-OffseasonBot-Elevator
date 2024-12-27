@@ -4,10 +4,9 @@
 
 package frc.robot.subsystems.elevator;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
-
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -20,12 +19,12 @@ public class ElevatorSensorsIO extends SubsystemBase {
     this.neoencoder = neoEncoder;
   }
 
-  public  StatusSignal<Double> getCANCoderPosition(){
-    return cancoder.getPosition();
+  public double getCANCoderPosition(){
+    return cancoder.getPosition().getValue();
   }
 
   public double getNEOEncoderPosition(){
-    return neoencoder.getPosition();
+    return neoencoder.getPosition() * Constants.ElevatorConstants.GEAR_REDUCTION;
   }
 
   public void resetEncoders(){
